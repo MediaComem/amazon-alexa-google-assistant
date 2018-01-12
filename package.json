@@ -1,0 +1,26 @@
+{
+  "name": "amazon-alexa-google-assistant",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "actions-on-google": "^1.6.1",
+    "alexa-app": "^4.2.0",
+    "alexa-sdk": "^1.0.21",
+    "body-parser": "^1.18.2",
+    "cookie-parser": "^1.4.3",
+    "dotenv": "^4.0.0",
+    "express": "^4.16.0",
+    "moment": "^2.18.1",
+    "request": "^2.83.0"
+  },
+  "devDependencies": {
+    "nodemon": "^1.12.1"
+  }
+}
