@@ -27,9 +27,54 @@ Amazon nous met à disposition son Alexa Skills Kit qui comme son nom l’indiqu
 ### Chez Google
 Pour utiliser l’environnement de développement il faut au préalable posséder un compte Google. La réalisation d’une application commence par la création d’un projet sur la plateforme [Action on Google](https://console.actions.google.com/u/0/). Un projet peut ensuite regrouper une ou plusieurs applications. Puisque nous avons fais le choix de bâtir notre application avec Dialogflow, au moment de la création du projet il faut cliquer sur le bouton BUILD de la carte Dialogflow puis cliquer sur le bouton Create actions on Dialogflow sur l’écran suivant. Ceci nous amène directement sur l’interface de Dialogflow que nous décrirons plus tard.
 
-![Dialogflow][https://github.com/MediaComem/amazon-alexa-google-assistant/blob/master/doc/dialogflow-projects.png]
+![Dialogflow](https://github.com/MediaComem/amazon-alexa-google-assistant/blob/master/doc/dialogflow-projects.png)
 
 ### Chez Amazon
 Chez Amazon aussi il faut posséder un compte dédié afin d’accéder aux différents outils. Pour créer une Skill il faut se rendre dans le menu [Alexa de la Developer Console](https://developer.amazon.com/edw/home.html#/skills). On peut ensuite y ajouter une nouvelle Skill en cliquant Add a New Skill, ce qui nous amène directement à l’écran de paramétrage de notre nouvelle application.
 
-![Alexa][https://github.com/MediaComem/amazon-alexa-google-assistant/blob/master/doc/amazon-projects.png]
+![Alexa](https://github.com/MediaComem/amazon-alexa-google-assistant/blob/master/doc/amazon-projects.png)
+
+## Création de l’application
+
+###Chez Google
+
+Nous voilà maintenant sur l’interface Dialogflow qui va nous permettre de créer concrètement notre application. Après avoir choisi Dialogflow pour construire son app, on est automatiquement redirigé vers l’écran de création d’agent. Ce dernier représente notre future application, nous allons donc le nommer “OfficeTemp”. Pour information, un projet peut contenir plusieurs agent et donc plusieurs applications. L’étape suivante nous amène à la construction des différentes possibilité d’interaction de notre app avec l’utilisateur. Nous avions défini plus haut un modèle d’interactions que nous allons maintenant adapter à la plateforme. Comme pour un chatbot conventionnel, Dialogflow nous permet de définir une ou plusieurs intentions afin d’y répondre avec des actions (les actions Dialogflow n’ont aucun rapport avec les Actions de Google). Dans notre cas, la seule intention que peut exprimer un utilisateur consiste à connaître la température d’une pièce. 
+Toutefois, par défaut, chaque application possède une Default Welcome intent qui représente son point d’entrée. Cette intention est en fait celle qui est invoquée par l’utilisateur lorsqu’il souhaite démarrer l’application. Dans les paramètres de cette intention ou retrouve l’events WELCOME. Cet events est là pour indiquer que la Default Welcome intent est l’intention de départ de notre application lorsque l’utilisateur prononcera Pour cela, il dira “Ok Google, talk to Office Temperature”. Nous avons ensuite la possibilité de définir une réponse à cette intention. Dans notre cas, nous souhaitons informer l’utilisateur qu’il peut demander la température d’une pièce en particulier. Nous allons donc répondre “For which room do you want the temperature?”.
+
+![Dialogflow create step 1](https://github.com/MediaComem/amazon-alexa-google-assistant/blob/master/doc/dialogflow-create.png)
+
+Ceci nous amène à création de notre seconde intention. Il s’agit ici d’analyser et traiter la réponse de l’utilisateur à la question précédente. Nous avons choisi de nommer cette intention get_room_temperature puisque nous essayons de déterminer la pièce pour laquelle l’utilisateur souhaite la température. Nous devons maintenant tenter de définir quelles sont les différentes manières que peut utiliser une personne pour annoncer la pièce. Ici nous avons définis deux possibilités “For the showroom” et “showroom”. 
+
+![Dialogflow create step 2](https://github.com/MediaComem/amazon-alexa-google-assistant/blob/master/doc/dialogflow-create-2.png)
+
+Pour chacune de ces phrases il faut ensuite déclarer à Dialogflow quel est le mot qui nous intéresse pour le déclarer comme entité (entity). Cette opération permet à Dialoglfow d’extraire et valider le paramètre qui nous intéresse afin de pouvoir le traiter correctement lors des étapes suivantes. Pour définir cette entité il faut double cliquer sur le mot en question afin qu'apparaisse une liste de type d’entités (entities).
+
+![Dialogflow create step 3](https://github.com/MediaComem/amazon-alexa-google-assistant/blob/master/doc/dialogflow-create-3.png)
+
+Les types par défaut (alphanumérique, booléen, email, etc.) ne nous seront pas utiles. Pour que nous puissions renvoyer la température correctement, nous devons définir notre entité comme une pièce appartenant à une liste de pièce prédéfinies. Pour cela, il faut cliquer sur “+ Create new” au bas de la liste. Sur l’écran suivant (Entities), il est possible de définir notre entité en lui donnant un nom (Rooms) et une liste de possibilités (Office, Showroom) ainsi que leurs synonymes.
+
+![Dialogflow create step 4](https://github.com/MediaComem/amazon-alexa-google-assistant/blob/master/doc/dialogflow-create-4.png)
+
+La grande partie du travail sur Dialogflow est maintenant terminée. Il ne reste maintenant plus qu’à câbler notre API météo avec notre agent OfficeTemp.
+
+### Chez Amazon 
+
+Lorsque l’on crée une Skill, on commence par lui donner un nom (name) pour l’identifier et un nom d’invocation (Invocation Name) pour la démarrer depuis Alexa. Comme avec Google, nous allons pouvoir maintenant définir les interactions possibles à l’aide de l’Interaction Model Builder.
+
+![Alexa create step 1](https://github.com/MediaComem/amazon-alexa-google-assistant/blob/master/doc/alexa-create.png)
+
+Nous allons créer ici l’intention qui nous permettra de déterminer la pièce demandée par l’utilisateur. Pour cela il faut créer une nouvelle Intents en cliquant sur “Add +”. Cette intention que nous avons choisi de nommer “OfficeTemperaure” regroupe toutes les possibilités (utterances) pour l’utilisateur d’interagir avec la Skill. Avec Alexa, l’utilisateur interrogera notre app de cette manière “Alexa, ask office temperature for the showroom” pour connaître la température du showroom. Le début de la phrase sert donc à lancer l’application tandis que la fin contient l’intention. Nous avons définit quelques possibilités (in the room, for the room). Pour chacune des ces possibilités, nous avons entouré le mot {room} d’accolades. En faisant cela, nous allons permettre à Alexa de valider et traiter différemment ce mot des autres pour y déceler le nom de la pièce. 
+
+![Alexa create step 2](https://github.com/MediaComem/amazon-alexa-google-assistant/blob/master/doc/alexa-create-2.png)
+
+Nous devons ensuite créer un slot qui représente le mot en question et lui attribuer un type. Comme nous l’avons fait auparavant avec Google, nous devons définir un type spécifique représentant nos pièces. Notre slot type rooms contient donc toutes les valeurs possibles et leurs synonymes.
+
+![Alexa create step 3](https://github.com/MediaComem/amazon-alexa-google-assistant/blob/master/doc/alexa-create-3.png)
+
+Pour terminer et valider tout ce que l’on vient de faire, il faut encore sauvegarder et construire le modèle à l’aide des boutons présents en haut de l’écran.
+
+
+
+
+
+
