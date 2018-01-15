@@ -1,6 +1,6 @@
 # Introduction
 Que ce soit pour Alexa ou Google Assistant, la modélisation et la logique de développement est similaire. Les Skills d’Alexa et les applications de Google Assistant se différencient surtout par le vocabulaire utilisé par chacune des firmes et bien évidemment par leurs environnements de développement respectifs. Nous allons voir ici comment développer une petite application (Skills/Application) pour chacune des plateformes en question.
-Au MEI nous possédons notre propre service météo qui nous retourne la température actuelle des différents bureau où nous travaillons. Ce service est accessible via une (https://office-temp.herokuapp.com/)[API] public. Le but étant ici d’adapter ce service afin de pouvoir interroger Alexa et Google Assistant (via Google Home) via une Skills ou Application que l’on nommera Office Temp.
+Au MEI nous possédons notre propre service météo qui nous retourne la température actuelle des différents bureau où nous travaillons. Ce service est accessible via une [API](https://office-temp.herokuapp.com/) public. Le but étant ici d’adapter ce service afin de pouvoir interroger Alexa et Google Assistant (via Google Home) via une Skills ou Application que l’on nommera Office Temp.
 Dans une logique de simplification nous utiliserons le terme assistant pour désigner Alexa et Google Assistant. Nous utiliserons également le terme application (ou app) pour désigner les Skills et les applications Google Assistant. 
 
 ## La modélisation
@@ -25,6 +25,11 @@ Amazon nous met à disposition son Alexa Skills Kit qui comme son nom l’indiqu
 ## Démarrer le projet
 
 ### Chez Google
-Pour utiliser l’environnement de développement il faut au préalable posséder un compte Google. La réalisation d’une application commence par la création d’un projet sur la plateforme Action on Google. Un projet peut ensuite regrouper une ou plusieurs applications. Puisque nous avons fais le choix de bâtir notre application avec Dialogflow, au moment de la création du projet il faut cliquer sur le bouton BUILD de la carte Dialogflow puis cliquer sur le bouton Create actions on Dialogflow sur l’écran suivant. Ceci nous amène directement sur l’interface de Dialogflow que nous décrirons plus tard.
+Pour utiliser l’environnement de développement il faut au préalable posséder un compte Google. La réalisation d’une application commence par la création d’un projet sur la plateforme [Action on Google](https://console.actions.google.com/u/0/). Un projet peut ensuite regrouper une ou plusieurs applications. Puisque nous avons fais le choix de bâtir notre application avec Dialogflow, au moment de la création du projet il faut cliquer sur le bouton BUILD de la carte Dialogflow puis cliquer sur le bouton Create actions on Dialogflow sur l’écran suivant. Ceci nous amène directement sur l’interface de Dialogflow que nous décrirons plus tard.
 
-![Dialogflow][doc/dialogflow-projects.png]
+![Dialogflow][https://github.com/MediaComem/amazon-alexa-google-assistant/blob/master/doc/dialogflow-projects.png]
+
+### Chez Amazon
+Chez Amazon aussi il faut posséder un compte dédié afin d’accéder aux différents outils. Pour créer une Skill il faut se rendre dans le menu [Alexa de la Developer Console](https://developer.amazon.com/edw/home.html#/skills). On peut ensuite y ajouter une nouvelle Skill en cliquant Add a New Skill, ce qui nous amène directement à l’écran de paramétrage de notre nouvelle application.
+
+![Alexa][https://github.com/MediaComem/amazon-alexa-google-assistant/blob/master/doc/amazon-projects.png]
