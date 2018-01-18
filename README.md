@@ -36,7 +36,7 @@ Chez Amazon aussi il faut posséder un compte dédié afin d’accéder aux diff
 
 ## Création de l’application
 
-###Chez Google
+### Chez Google
 
 Nous voilà maintenant sur l’interface Dialogflow qui va nous permettre de créer concrètement notre application. Après avoir choisi Dialogflow pour construire son app, on est automatiquement redirigé vers l’écran de création d’agent. Ce dernier représente notre future application, nous allons donc le nommer “OfficeTemp”. Pour information, un projet peut contenir plusieurs agent et donc plusieurs applications. L’étape suivante nous amène à la construction des différentes possibilité d’interaction de notre app avec l’utilisateur. Nous avions défini plus haut un modèle d’interactions que nous allons maintenant adapter à la plateforme. Comme pour un chatbot conventionnel, Dialogflow nous permet de définir une ou plusieurs intentions afin d’y répondre avec des actions (les actions Dialogflow n’ont aucun rapport avec les Actions de Google). Dans notre cas, la seule intention que peut exprimer un utilisateur consiste à connaître la température d’une pièce. 
 Toutefois, par défaut, chaque application possède une Default Welcome intent qui représente son point d’entrée. Cette intention est en fait celle qui est invoquée par l’utilisateur lorsqu’il souhaite démarrer l’application. Dans les paramètres de cette intention ou retrouve l’events WELCOME. Cet events est là pour indiquer que la Default Welcome intent est l’intention de départ de notre application lorsque l’utilisateur prononcera Pour cela, il dira “Ok Google, talk to Office Temperature”. Nous avons ensuite la possibilité de définir une réponse à cette intention. Dans notre cas, nous souhaitons informer l’utilisateur qu’il peut demander la température d’une pièce en particulier. Nous allons donc répondre “For which room do you want the temperature?”.
@@ -72,6 +72,48 @@ Nous devons ensuite créer un slot qui représente le mot en question et lui att
 ![Alexa create step 3](https://github.com/MediaComem/amazon-alexa-google-assistant/blob/master/doc/alexa-create-3.png)
 
 Pour terminer et valider tout ce que l’on vient de faire, il faut encore sauvegarder et construire le modèle à l’aide des boutons présents en haut de l’écran.
+
+## Connecter l’application à un service (API)
+
+Jusqu’ici nous avons défini comment l’utilisateur peut interagir avec notre application et comment celle-ci analysera ce qui lui ai dit. Il nous reste toutefois à configurer notre app pour que celle-ci réponde avec la bonne information. Pour cela nous allons connecter notre application à notre API en ligne. Actuellement celle-ci répond simplement avec du JSON lorsqu’un utilisateur ou une application tiers l’interrogent. Nous allons devoir modifier un peu notre code (Node.js) pour qu’il réponde aux exigences de nos deux plateformes en matière de réponse. On ne va entrer en détails dans les spécificités de notre code mais plutôt décrire les points importants de celui-ci.
+
+### Chez Google
+
+Pour être compatible avec l’eco-système Google Assistant, notre API doit être accessible via HTTPS. La première chose à faire est de définir l’URL qui permet de retourner la température d’une pièce dans la section Webhook du menu Fulfillment de Dialogflow. Ceci permet de faire le lien entre la case que nous avions cochée précédemment pour notre intention get_temperature_room. 
+
+![Dialogflow connect](https://github.com/MediaComem/amazon-alexa-google-assistant/blob/master/doc/dialogflow-connect.png)
+
+Grâce à cela, à chaque fois que Dialogflow déterminera que l’utilisateur invoque l’intention get_temperature_room, une requête (POST) sera envoyée vers notre API qui retournera alors la réponse au format souhaité. Pour traiter simplement la requête envoyée par Dialogflow nous avons utilisé la classe DialogflowApp de la librairie actions-on-google.
+Notre code est assez simpliste et vous trouverez plus de détails dans les commentaires. Dans un premier temps nous récupérons le paramètre room envoyer par Dialogflow. Nous appelons ensuite l’URL du thermomètre en question. Puis nous parsons la réponse et la retournons au format Dialogflow.
+
+### Chez Amazon
+
+Tout comme Google, Amazon impose d’utiliser des URL sécurisée (HTTPS). Cette dernière est paramétrée dans l’écran Configuration de notre Skill.
+
+![Dialogflow connect](https://github.com/MediaComem/amazon-alexa-google-assistant/blob/master/doc/alexa-connect.png)
+
+Tout comme pour Dialogflow, il existe des librairies pour simplifier le traitement des requêtes envoyées par Alexa. Toutefois nous avons fait le choix ici de faire sans afin de comprendre un peu mieux ce qu’il se passait en coulisse. 
+La première chose à faire lorsque l’on reçoit une requête (POST) d’Alexa, c’est l’analyse du type de requête et de l’état du dialogue. Ces informations sont envoyées vers l’API par Alexa afin d’informer de l’état de la conversation à chaque fois que l’utilisateur interagit avec notre Skill. Si l’utilisateur démarre la conversation avec notre Skill sans spécifier une pièce, alors Alexa postera une requête vers notre API qui contiendra un type lauchRequest. On peut à ce moment là choisir de répondre par le message que l’on souhaite. Dans notre cas nous avons décidé de répondre simplement par un message de bienvenue et en indiquant qu’il faut préciser le nom d’une pièce pour obtenir la température.
+Si l’utilisateur le fait, alors Alexa envoie une requête de type intent contenant le nom de la pièce (slot). Ces informations permettent alors à l’API de générer la réponse appropriée.
+
+## Test des applications
+
+###Chez Google
+
+Il existe deux solutions simples de tester notre application. La première possibilité consiste à utiliser le simulator Google Assistant. Ce simulateur est accessible depuis le menu Integrations  de Dialogflow en cliquant ensuite sur la carte Google Assistant. On peut ensuite simplement tester notre application en parlant au micro de notre ordinateur ou en écrivant nos demandes dans le champs prévu. Ce simulateur offre l’avantage d’avoir une vue sur ce que Google Assistant envoi et réceptionne comme requêtes.
+La deuxième possibilité consiste à utiliser n’importe quelle périphérique compatible Google Assistant connecté au compte Google utilisé pour le développement de l’app. Si vous possédez un Google Home, alors il vous suffit de lui demander “Ok Google, Talk to my test app” pour que celui démarre votre application.
+### Chez Amazon
+L’interface de configuration de Skills Alexa offre un menu test qui permet d’envoyer des requêtes de types textes afin de tester une Skill. Toutefois il est actuellement impossible de tester une Skill custom comme celle que nous avons développé ici. Pour tester notre Skill, il faut donc utiliser un périphérique disposant d’Alexa comme Echo et que celui-ci soit connecté au même compte Amazon que celui utilisé pour le développement de la Skill.
+
+## Déploiement des applications
+Les applications développées pour Alexa et Google Assistant doivent suivre un processus de review strict avant d’être rendues publics.
+
+
+
+
+
+
+
 
 
 
