@@ -1,4 +1,15 @@
-# Introduction
+#Assistants personnels: Développer sa propre app
+
+[Introduction](#-introduction)
+[La modélisation](#-la-modélisation)
+[Les outils à disposition](#-les-outils-à-disposition)
+[Démarrage du projet](#-démarrage-du-projet)
+[Création des applications](#-création-des-applications)
+[Connection des application à un service (API)](#-connection-des-application-à-un-service-(API))
+[Test des applications](#-test-des-applications)
+[Déploiement des applications](#-déploiement-des-applications)
+
+## Introduction
 Que ce soit pour Alexa ou Google Assistant, la modélisation et la logique de développement est similaire. Les Skills d’Alexa et les applications de Google Assistant se différencient surtout par le vocabulaire utilisé par chacune des firmes et bien évidemment par leurs environnements de développement respectifs. Nous allons voir ici comment développer une petite application (Skills/Application) pour chacune des plateformes en question.
 Au MEI nous possédons notre propre service météo qui nous retourne la température actuelle des différents bureau où nous travaillons. Ce service est accessible via une [API](https://office-temp.herokuapp.com/) public. Le but étant ici d’adapter ce service afin de pouvoir interroger Alexa et Google Assistant (via Google Home) via une Skills ou Application que l’on nommera Office Temp.
 Dans une logique de simplification nous utiliserons le terme assistant pour désigner Alexa et Google Assistant. Nous utiliserons également le terme application (ou app) pour désigner les Skills et les applications Google Assistant. 
@@ -22,7 +33,7 @@ Dialogflow, anciennement connu sous le nom de api.ai a été acquis et rebaptis�
 ### Chez Amazon
 Amazon nous met à disposition son Alexa Skills Kit qui comme son nom l’indique est un répertoire d’outils dédiés à la création de Skills. A l’intérieur de celui-ci on retrouve un tas de choses permettant de configurer et de développer son application avec entre autre un Interaction Model qui permet de traiter les intentions utilisateurs un peu à la manière de Dialogflow.
 
-## Démarrer le projet
+## Démarrage du projet
 
 ### Chez Google
 Pour utiliser l’environnement de développement il faut au préalable posséder un compte Google. La réalisation d’une application commence par la création d’un projet sur la plateforme [Action on Google](https://console.actions.google.com/u/0/). Un projet peut ensuite regrouper une ou plusieurs applications. Puisque nous avons fais le choix de bâtir notre application avec Dialogflow, au moment de la création du projet il faut cliquer sur le bouton BUILD de la carte Dialogflow puis cliquer sur le bouton Create actions on Dialogflow sur l’écran suivant. Ceci nous amène directement sur l’interface de Dialogflow que nous décrirons plus tard.
@@ -34,7 +45,7 @@ Chez Amazon aussi il faut posséder un compte dédié afin d’accéder aux diff
 
 ![Alexa](https://github.com/MediaComem/amazon-alexa-google-assistant/blob/master/doc/amazon-projects.png)
 
-## Création de l’application
+## Création des applications
 
 ### Chez Google
 
@@ -73,7 +84,7 @@ Nous devons ensuite créer un slot qui représente le mot en question et lui att
 
 Pour terminer et valider tout ce que l’on vient de faire, il faut encore sauvegarder et construire le modèle à l’aide des boutons présents en haut de l’écran.
 
-## Connecter l’application à un service (API)
+## Connection des applications à un service (API)
 
 Jusqu’ici nous avons défini comment l’utilisateur peut interagir avec notre application et comment celle-ci analysera ce qui lui ai dit. Il nous reste toutefois à configurer notre app pour que celle-ci réponde avec la bonne information. Pour cela nous allons connecter notre application à notre API en ligne. Actuellement celle-ci répond simplement avec du JSON lorsqu’un utilisateur ou une application tiers l’interrogent. Nous allons devoir modifier un peu notre code (Node.js) pour qu’il réponde aux exigences de nos deux plateformes en matière de réponse. On ne va entrer en détails dans les spécificités de notre code mais plutôt décrire les points importants de celui-ci.
 
@@ -98,14 +109,16 @@ Si l’utilisateur le fait, alors Alexa envoie une requête de type intent conte
 
 ## Test des applications
 
-###Chez Google
+### Chez Google
 
 Il existe deux solutions simples de tester notre application. La première possibilité consiste à utiliser le simulator Google Assistant. Ce simulateur est accessible depuis le menu Integrations  de Dialogflow en cliquant ensuite sur la carte Google Assistant. On peut ensuite simplement tester notre application en parlant au micro de notre ordinateur ou en écrivant nos demandes dans le champs prévu. Ce simulateur offre l’avantage d’avoir une vue sur ce que Google Assistant envoi et réceptionne comme requêtes.
 La deuxième possibilité consiste à utiliser n’importe quelle périphérique compatible Google Assistant connecté au compte Google utilisé pour le développement de l’app. Si vous possédez un Google Home, alors il vous suffit de lui demander “Ok Google, Talk to my test app” pour que celui démarre votre application.
+
 ### Chez Amazon
 L’interface de configuration de Skills Alexa offre un menu test qui permet d’envoyer des requêtes de types textes afin de tester une Skill. Toutefois il est actuellement impossible de tester une Skill custom comme celle que nous avons développé ici. Pour tester notre Skill, il faut donc utiliser un périphérique disposant d’Alexa comme Echo et que celui-ci soit connecté au même compte Amazon que celui utilisé pour le développement de la Skill.
 
 ## Déploiement des applications
+
 Les applications développées pour Alexa et Google Assistant doivent suivre un processus de review strict avant d’être rendues publics.
 
 
