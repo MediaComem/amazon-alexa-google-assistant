@@ -1,13 +1,13 @@
 #Assistants personnels: Développer sa propre app
 
-[Introduction](#-introduction)
-[La modélisation](#-la-modélisation)
-[Les outils à disposition](#-les-outils-à-disposition)
-[Démarrage du projet](#-démarrage-du-projet)
-[Création des applications](#-création-des-applications)
-[Connection des application à un service (API)](#-connection-des-application-à-un-service-(API))
-[Test des applications](#-test-des-applications)
-[Déploiement des applications](#-déploiement-des-applications)
+- [Introduction](#introduction)
+- [La modélisation](#la-modélisation)
+- [Les outils à disposition](#les-outils-à-disposition)
+- [Démarrage du projet](#démarrage-du-projet)
+- [Création des applications](#création-des-applications)
+- [Connection des application à un service (API)](#connection-des-application-à-un-service-(API))
+- [Test des applications](#test-des-applications)
+- [Déploiement des applications](#déploiement-des-applications)
 
 ## Introduction
 Que ce soit pour Alexa ou Google Assistant, la modélisation et la logique de développement est similaire. Les Skills d’Alexa et les applications de Google Assistant se différencient surtout par le vocabulaire utilisé par chacune des firmes et bien évidemment par leurs environnements de développement respectifs. Nous allons voir ici comment développer une petite application (Skills/Application) pour chacune des plateformes en question.
